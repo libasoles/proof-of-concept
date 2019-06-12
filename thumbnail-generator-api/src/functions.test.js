@@ -1,6 +1,6 @@
 const sizeOf = require('buffer-image-size');
 
-const {resize} = require('../node_modules/functions');
+const {resize} = require('./functions');
 
 describe('resize', () => {
 
@@ -10,7 +10,7 @@ describe('resize', () => {
   };
 
   it('should resize an image to given dimensions', async () => {
-    const validImage = 'alice.jpg';
+    const validImage = __dirname + '/alice.jpg';
     const output = resize(validImage, config);
     const image = await output.toBuffer();
 
