@@ -4,6 +4,7 @@
   "description": "Image resizer - Proof of concept",
   "main": "src/main.js",
   "dependencies": {
+    "mime-types": "^2.1.24",
     "sharp": "^0.22.1"
   },
   "devDependencies": {
@@ -12,7 +13,8 @@
   },
   "scripts": {
     "start": "node main.js",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "",
   "license": "ISC"
