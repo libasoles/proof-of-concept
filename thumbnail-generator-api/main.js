@@ -1,32 +1,19 @@
-const sharp = require("sharp");
+const config = require("./config");
+const functions = require("./functions");
 
-let inputFile = "alice.jpg"
+function process(inputFile) {
 
-dimensions = [{
-  width: 400,
-  height: 300
-}, {
-  width: 160,
-  height: 120
-}, {
-  width: 120,
-  height: 120
-}];
+  const {dimensions} = config.output;
+  const {resize, generateFilename} = functions;
 
-function resize(image, dimensions) {
-  const {width, height}  = dimensions;
-  const ext = 'jpg';
+  dimensions.forEach(dimension => {
+    const {width, height}  = dimension;
+    const filename = generateFilename(inputFile, `output-${width}x${height}`);
 
-  sharp(image).resize(dimensions).toFile(`output-${width}x${height}.${ext}`)
-    .then(function() {
-      console.log("Created");
-    })
-    .catch(function(err) {
-      console.log("Error")
-    })
+    resize(inputFile, dimension).toFile(filename);
+  });
 }
 
 
-dimensions.forEach(d => {
-  resize(inputFile, d);
-});
+let inputFile = "alice.jpg"
+process(inputFile);
