@@ -2,7 +2,7 @@
   "name": "resizer",
   "version": "1.0.0",
   "description": "Image resizer - Proof of concept",
-  "main": "main.js",
+  "main": "src/main.js",
   "dependencies": {
     "sharp": "^0.22.1"
   },
