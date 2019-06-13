@@ -1,7 +1,3 @@
-class StorageError extends Error {
-  constructor(message) {
-    super(message);
-  }
-}
+class StorageError extends Error {}
 
 module.exports = StorageError;

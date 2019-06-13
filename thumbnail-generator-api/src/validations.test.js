@@ -1,13 +1,13 @@
+const fs = require('fs');
 const sharp = require('sharp');
-const sizeOf = require('buffer-image-size');
 
 const createImageValidator = require('./validations');
 
 describe('validateImage', () => {
   let validateImage;
 
-  const validImage = __dirname + '/alice.jpg';
-  const bigImage = __dirname + '/tmpTest.jpg';
+  const validImage = `${__dirname}/alice.jpg`;
+  const bigImage = `${__dirname}/tmpTest.jpg`;
 
   const config = {
     mimeTypes: ['image/jpeg', 'image/png'],
