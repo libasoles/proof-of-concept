@@ -9,7 +9,7 @@ function resize(image, dimensions) {
 function generateFilename(inputFile, outputName) {
   const ext = path.extname(inputFile);
 
-  return `${outputName}.${ext}`;
+  return `${outputName}${ext}`;
 }
 
 module.exports = {

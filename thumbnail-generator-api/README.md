@@ -1,40 +1,21 @@
-# PoC: Thumbnail Generator API
+# Thumbnail Generator API
 
-## Goal
-Build a simple API that generates thumbnails from a source image
+## Dependencies
 
-## Requirements
-- The API should provide at least 1 endpoint where the user will be able to POST the original image
-- The API must **ONLY** accept PNG and JPEG files
-- The API must reject input file bigger than **5mb**
-- The API should give the user 3 new images with the following dimensions
-  - 400x300
-  - 160x120
-  - 120x120
+As usual, run:
 
-## Grading Guidelines
+`npm install`
 
-### MVP (40 points)
-- Every requirement is met
-- The solution runs on our enviroment
-- Tech Stack: Node.js >=8 / Python 3
-- Any ENV specific value should be configurable and documented
-- Everything should work after following a simple README
-- The code should be clear and easy to read / debug
+## Environment variables
+You need aws credentials. Follow these steps to get them.
+https://docs.aws.amazon.com/es_es/general/latest/gr/aws-sec-cred-types.html
+https://docs.aws.amazon.com/es_es/sdk-for-javascript/v2/developer-guide/getting-your-credentials.html
 
-### Nice moves (5 points each)
-- It includes **RAML** or **Swagger** documentation 
-- It includes configuration files / scripts for deploying it on **AWS** or **GCP**
-- It's serverless! (either **AWS Lambda + API Gateway** or **GCP Cloud Functions**)
-- It relies on **Serverless Framework** or **SAM**
-- It's Dockerized for local development / testing
-- It leverages cloud services (ie: AWS S3, SNS, SQS, etc...)
-- It's asynchronic
-- It's fast (<~500ms after upload finishes)
-- It includes some kind of testing (unit tests, integration tests, etc) with at least 70% coverage
-- It has an auth implementation (recommended: Auth0)
+Important: don't use your root user to generate the key pair credentials. Create a new user from the IAM console, and generate the pair for that new user. You don't need to give the new user access to aWS console. Just development access (for SDK and APIs). See: 
+https://console.aws.amazon.com/iam/home?#/home
 
-### Wait, WHAT?! (10 points each)
-- It includes a configuration file / script to setup a CI/CD process on AWS or GCP
-- It includes three different kinds of tests (unit, integration and performance)
+Having the ID and secret key, write them down in .env file. There's a .env.template available so that should be an easy task.
 
+## S3 buckets
+Uploads goes to an S3 bucket. Make sure you have one created at:
+https://console.aws.amazon.com/s3/home?region=us-east-1
