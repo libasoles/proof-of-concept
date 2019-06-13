@@ -1,18 +1,58 @@
 const sizeOf = require('buffer-image-size');
 
-const { resize } = require('./functions');
+const { rescale, createImageCrops } = require('./functions');
+const MockStorage = require('./services/MockStorage');
 
-describe('resize', () => {
-  const config = {
+describe('rescale', () => {
+  const dimensions = {
     width: 120,
     height: 120,
   };
 
   it('should resize an image to given dimensions', async () => {
     const validImage = `${__dirname}/alice.jpg`;
-    const output = resize(validImage, config);
+    const output = rescale(validImage, dimensions);
     const image = await output.toBuffer();
 
-    expect(sizeOf(image)).toMatchObject(config);
+    expect(sizeOf(image)).toMatchObject(dimensions);
+  });
+});
+
+describe('createImageCrops', () => {
+  it('should create n resized images and provide the correct links', async () => {
+    const image = `${__dirname}/alice.jpg`;
+    const basePath = 'https://cloud.store/';
+    const storage = new MockStorage({ basePath });
+    const resizeStrategy = jest.fn(() => {});
+    const filenamePrefix = 'test';
+    const dimensions = [
+      {
+        width: 120,
+        height: 120,
+      },
+      {
+        width: 240,
+        height: 240,
+      },
+    ];
+
+    const result = await createImageCrops({
+      image,
+      dimensions,
+      storage,
+      resize: resizeStrategy,
+      filenamePrefix,
+    });
+
+    expect(resizeStrategy.mock.calls.length).toBe(2);
+    expect(result.length).toBe(2);
+
+    let width;
+    let height;
+    ({ width, height } = dimensions[0]);
+    expect(result[0]).toBe(`${`${basePath + filenamePrefix}-${width}`}x${height}.jpg`);
+
+    ({ width, height } = dimensions[1]);
+    expect(result[1]).toBe(`${`${basePath + filenamePrefix}-${width}`}x${height}.jpg`);
   });
 });

@@ -7,7 +7,9 @@ async function execute(image) {
   const storage = storageFactory('aws-s3');
 
   try {
-    const paths = await createImageCrops(image, dimensions, storage);
+    const paths = await createImageCrops({
+      image, dimensions, storage,
+    });
 
     console.log('Response: ', JSON.stringify(paths));
   } catch (e) {

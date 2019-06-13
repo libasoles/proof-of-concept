@@ -15,7 +15,7 @@ const checkMaxSize = maxSize => (image) => {
 
 const checkMimeType = mimeTypes => (image) => {
   const mType = mime.lookup(image);
-  console.log(mType)
+
   if (mimeTypes.some(equal(mType))) return true;
 
   throw new Error('Mime-type not valid');

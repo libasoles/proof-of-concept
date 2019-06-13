@@ -8,10 +8,10 @@ const StorageError = require('./StorageError');
  * Requires correct env variables to work.
  */
 class S3CloudStorage {
-  constructor({ service, bucketName = null, baseUrl }) {
+  constructor({ service, bucketName = null, basePath }) {
     this.service = service;
     this.bucketName = bucketName || process.env.AWS_S3_BUCKET;
-    this.url = util.format(baseUrl, this.bucketName);
+    this.url = util.format(basePath, this.bucketName);
   }
 
   async store(file, outputFilename) {

@@ -28,13 +28,13 @@ describe('validateImage', () => {
   });
 
   it('should fail with a large image', async () => {
-    const image = await sharp(validImage).resize(9000, 9000);
+    const image = sharp(validImage).resize(9000, 9000);
     const imageBuffer = await image.toBuffer();
 
     expect(imageBuffer.byteLength).not.toBeLessThan(config.maxSize);
 
     // save it temporarily to validate it
-    image.toFile(image);
+    await image.toFile(bigImage);
     expect(() => validateImage(image)).toThrow();
   });
 
