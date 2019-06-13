@@ -6,8 +6,8 @@ const createImageValidator = require('./validations');
 describe('validateImage', () => {
   let validateImage;
 
-  const validImage = `${__dirname}/alice.jpg`;
-  const bigImage = `${__dirname}/tmpTest.jpg`;
+  const validImage = `${__dirname}/__tests__/alice.jpg`;
+  const bigImage = `${__dirname}/__tests__/tmpTest.jpg`;
 
   const config = {
     mimeTypes: ['image/jpeg', 'image/png'],
@@ -23,7 +23,7 @@ describe('validateImage', () => {
   });
 
   it('should fail with a wrong mimetype', () => {
-    const inputFile = 'cheshire-cat.gif';
+    const inputFile = `${__dirname}/__tests__/cheshire-cat.gif`;
     expect(() => validateImage(inputFile)).toThrow();
   });
 

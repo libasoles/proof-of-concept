@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 
 const S3CloudStorage = require('./S3CloudStorage');
-const config = require('../config');
+const config = require('../../config');
 
 function storageFactory(type, params = {}) {
   if (type === 'aws-s3') {

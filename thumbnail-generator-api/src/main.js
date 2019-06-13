@@ -1,6 +1,6 @@
 const config = require('./config');
-const { createImageCrops } = require('./functions');
-const storageFactory = require('./services/storageFactory');
+const { createImageCrops } = require('./services/resizer');
+const storageFactory = require('./services/storage/storageFactory');
 
 async function execute(image) {
   const { dimensions } = config.output;

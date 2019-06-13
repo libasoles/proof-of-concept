@@ -1,7 +1,7 @@
 const sharp = require('sharp');
 
-const asyncForEach = require('./helpers/asyncForEach');
-const generateFilename = require('./helpers/generateFilename');
+const asyncForEach = require('../helpers/asyncForEach');
+const generateFilename = require('../helpers/generateFilename');
 
 function rescale(image, dimensions) {
   return sharp(image).resize(dimensions);
