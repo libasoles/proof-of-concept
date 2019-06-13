@@ -1,8 +1,6 @@
 const util = require('util');
-const AWS = require('aws-sdk');
 const mime = require('mime-types');
 
-const config = require("../config");
 const StorageError = require('./StorageError');
 
 /**
@@ -11,27 +9,27 @@ const StorageError = require('./StorageError');
  */
 class S3CloudStorage {
 
-  constructor(bucketName = null) {
-    this.service = new AWS.S3();
+  constructor({service, bucketName = null, baseUrl}) {
+    this.service = service;
     this.bucketName = bucketName || process.env.AWS_S3_BUCKET;
-    this.url = util.format(config.output.s3.url, this.bucketName);
+    this.url = util.format(baseUrl, this.bucketName);
   }
 
-  async store(image, filename) {
+  async store(file, outputFilename) {
 
     try {
       await this.service.putObject(
         {
           Bucket: this.bucketName,
-          Key: filename,
-          Body: image,
-          ContentType: mime.lookup(image)
+          Key: outputFilename,
+          Body: file,
+          ContentType: mime.lookup(file)
         }
       ).promise();
 
-      return this.url + filename;
+      return this.url + outputFilename;
     } catch(e) {
-      console.error(e.getMessage());
+      console.error(e);
       throw new StorageError("Could not save the file");
     }
   }
