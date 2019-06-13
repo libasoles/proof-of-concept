@@ -14,5 +14,8 @@ module.exports = {
       width: 120,
       height: 120,
     }],
+    s3: {
+      url: `https://%s.s3-sa-east-1.amazonaws.com/`
+    }
   },
 };
