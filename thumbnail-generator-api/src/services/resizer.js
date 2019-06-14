@@ -12,13 +12,16 @@ async function createImageCrops({
   dimensions,
   storage,
   resize = rescale,
-  filenamePrefix = 'output',
+  filenamePrefix = 'crop',
 }) {
   const paths = [];
 
   await asyncForEach(dimensions, async (dimension) => {
     const { width, height } = dimension;
-    const filename = generateFilename(image, `${filenamePrefix}-${width}x${height}`);
+    const filename = generateFilename(image, {
+      prefix: filenamePrefix,
+      sufix: `${width}x${height}`,
+    });
 
     resize(image, dimension);
     const imagePath = await storage.store(image, filename);

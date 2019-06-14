@@ -1,4 +1,4 @@
-const StorageError = require('./StorageError');
+const StorageError = require('../StorageError');
 
 class MockStorage {
   constructor({ basePath }) {

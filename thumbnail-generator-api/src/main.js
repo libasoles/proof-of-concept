@@ -13,9 +13,10 @@ async function execute(image) {
 
     console.log('Response: ', JSON.stringify(paths));
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e);
   }
 }
 
-const inputFile = `${__dirname}/alice.jpg`;
+const inputFile = '__tests__/alice.jpg';
 execute(inputFile);
