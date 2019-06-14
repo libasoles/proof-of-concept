@@ -4,7 +4,7 @@ const storageFactory = require('./services/storage/storageFactory');
 
 async function execute(image) {
   const { dimensions } = config.output;
-  const storage = storageFactory('aws-s3');
+  const storage = storageFactory(config.storage.default);
 
   try {
     const paths = await createImageCrops({

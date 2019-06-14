@@ -18,4 +18,7 @@ module.exports = {
       url: 'https://%s.s3-sa-east-1.amazonaws.com/',
     },
   },
+  storage: {
+    default: 'aws-s3',
+  },
 };
