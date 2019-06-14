@@ -15,12 +15,22 @@ async function execute(image) {
       image, dimensions, storage,
     });
 
-    console.log('Response: ', JSON.stringify(paths));
+    return { paths };
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e);
+
+    return { error: e.message };
   }
 }
 
+async function measure(fn, params) {
+  const start = (new Date()).getTime();
+  const response = await fn(...params);
+  console.debug('Response: ', JSON.stringify(response));
+  const end = (new Date()).getTime();
+  console.debug(end - start, ' ms');
+}
+
 const inputFile = `${__dirname}/__tests__/alice.jpg`;
-execute(inputFile);
+measure(execute, [inputFile]);

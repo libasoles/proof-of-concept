@@ -1,5 +1,8 @@
 const fs = require('fs');
 const mime = require('mime-types');
+const { promisify } = require('util');
+
+const stat = promisify(fs.stat);
 
 const ValidationError = require('./ValidationError');
 
@@ -7,8 +10,8 @@ function equal(a) {
   return b => a === b;
 }
 
-const checkMaxSize = maxSize => (image) => {
-  const fileInfo = fs.statSync(image);
+const checkMaxSize = maxSize => async (image) => {
+  const fileInfo = await stat(image);
 
   if (fileInfo.size <= maxSize) return true;
 

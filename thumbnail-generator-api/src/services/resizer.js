@@ -1,9 +1,9 @@
 const sharp = require('sharp');
+const async = require('async');
 
-const asyncForEach = require('../helpers/asyncForEach');
 const generateFilename = require('../helpers/generateFilename');
 
-function rescale(image, dimensions) {
+async function rescale(image, dimensions) {
   return sharp(image).resize(dimensions);
 }
 
@@ -16,18 +16,19 @@ async function createImageCrops({
 }) {
   const paths = [];
 
-  await asyncForEach(dimensions, async (dimension) => {
+  await async.forEachOf(dimensions, async (dimension) => {
     const { width, height } = dimension;
-    const filename = generateFilename(image, {
+    const filename = await generateFilename(image, {
       prefix: filenamePrefix,
       sufix: `${width}x${height}`,
     });
 
-    resize(image, dimension);
+    await resize(image, dimension);
     const imagePath = await storage.store(image, filename);
 
     paths.push(imagePath);
   });
+
 
   return paths;
 }
