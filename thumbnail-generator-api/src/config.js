@@ -1,7 +1,9 @@
 module.exports = {
-  validationCriteria: {
-    mimeTypes: ['image/jpeg', 'image/png'],
-    maxSize: 5 * 1024 * 1024,
+  validation: {
+    criteria: {
+      mimeTypes: ['image/jpeg', 'image/png'],
+      maxSize: 5 * 1024 * 1024,
+    },
   },
   output: {
     dimensions: [{
