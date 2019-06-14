@@ -1,8 +1,8 @@
 const path = require('path');
-const uuidv3 = require('uuid/v3');
+const uuidv4 = require('uuid/v4');
 
 function generateFilename(inputFile, { prefix = 'crop', sufix = '' }) {
-  const uuid = uuidv3(prefix + sufix, uuidv3.URL);
+  const uuid = uuidv4(prefix + sufix);
   const ext = path.extname(inputFile);
 
   return `${prefix}-${uuid}-${sufix}${ext}`;
