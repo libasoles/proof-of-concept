@@ -27,7 +27,6 @@ class S3CloudStorage {
 
       return this.url + outputFilename;
     } catch (e) {
-      console.error(e);
       throw new StorageError('Could not save the file');
     }
   }

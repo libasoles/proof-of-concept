@@ -25,7 +25,7 @@ describe('validateImage', () => {
 
   it('should fail with a wrong mimetype', () => {
     const inputFile = '/__tests__/cheshire-cat.gif';
-    expect(() => validateImage(inputFile)).toThrowError(ValidationError);;
+    expect(() => validateImage(inputFile)).toThrowError(ValidationError);
   });
 
   it('should fail with a large image', async () => {
