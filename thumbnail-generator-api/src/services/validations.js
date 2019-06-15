@@ -1,8 +1,5 @@
 const fs = require('fs');
 const mime = require('mime-types');
-const { promisify } = require('util');
-
-const stat = promisify(fs.stat);
 
 const ValidationError = require('./ValidationError');
 
@@ -10,8 +7,8 @@ function equal(a) {
   return b => a === b;
 }
 
-const checkMaxSize = maxSize => async (image) => {
-  const fileInfo = await stat(image);
+const checkMaxSize = maxSize => (image) => {
+  const fileInfo = fs.statSync(image);
 
   if (fileInfo.size <= maxSize) return true;
 
@@ -47,7 +44,9 @@ function setupValidators(criteria) {
 function createImageValidator(criteria) {
   const validators = setupValidators(criteria);
 
-  return image => validators.forEach(validate => validate(image));
+  return (image) => {
+    validators.forEach(check => check(image));
+  };
 }
 
 module.exports = createImageValidator;

@@ -21,7 +21,7 @@
   "scripts": {
     "start": "node -r dotenv/config src/main.js",
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage"
   },
   "jest": {

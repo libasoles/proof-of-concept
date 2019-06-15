@@ -24,13 +24,4 @@ async function execute(image) {
   }
 }
 
-async function measure(fn, params) {
-  const start = (new Date()).getTime();
-  const response = await fn(...params);
-  console.debug('Response: ', JSON.stringify(response));
-  const end = (new Date()).getTime();
-  console.debug(end - start, ' ms');
-}
-
-const inputFile = `${__dirname}/__tests__/alice.jpg`;
-measure(execute, [inputFile]);
+module.exports = execute;

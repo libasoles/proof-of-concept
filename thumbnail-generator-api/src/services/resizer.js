@@ -3,7 +3,7 @@ const async = require('async');
 
 const generateFilename = require('../helpers/generateFilename');
 
-async function rescale(image, dimensions) {
+function rescale(image, dimensions) {
   return sharp(image).resize(dimensions);
 }
 
@@ -23,7 +23,7 @@ async function createImageCrops({
       sufix: `${width}x${height}`,
     });
 
-    await resize(image, dimension);
+    resize(image, dimension);
     const imagePath = await storage.store(image, filename);
 
     paths.push(imagePath);

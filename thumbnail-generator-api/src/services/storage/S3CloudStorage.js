@@ -1,5 +1,6 @@
 const util = require('util');
 const mime = require('mime-types');
+const PassThroughStream = require('stream').PassThrough;
 
 const StorageError = require('./StorageError');
 
@@ -16,19 +17,26 @@ class S3CloudStorage {
 
   async store(file, outputFilename) {
     try {
-      await this.service.putObject(
-        {
-          Bucket: this.bucketName,
-          Key: outputFilename,
-          Body: file,
-          ContentType: mime.lookup(file),
-        },
-      ).promise();
+      await this.stream({
+        Bucket: this.bucketName,
+        Key: outputFilename,
+        Body: file,
+        ContentType: mime.lookup(file),
+      });
 
       return this.url + outputFilename;
     } catch (e) {
       throw new StorageError('Could not save the file');
     }
+  }
+
+  async stream(params) {
+    const pass = new PassThroughStream();
+
+    return {
+      writeStream: pass,
+      promise: this.service.putObject(params).promise(),
+    };
   }
 }
 
