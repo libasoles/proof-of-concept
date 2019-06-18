@@ -8,20 +8,13 @@ async function execute(image) {
   const validateImage = createImageValidator(config.validation.criteria);
   const storage = storageFactory(config.storage.default);
 
-  try {
-    validateImage(image);
+  validateImage(image);
 
-    const paths = await createImageCrops({
-      image, dimensions, storage,
-    });
+  const paths = await createImageCrops({
+    image, dimensions, storage,
+  });
 
-    return { paths };
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-
-    return { error: e.message };
-  }
+  return { paths };
 }
 
 module.exports = execute;

@@ -1,0 +1,23 @@
+service: sinapsis-poc-gperez
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: dev
+  region: sa-east-1
+
+functions:
+  resizer:
+    handler: src/awsHandler.execute
+    events:
+      - http: post images/resize
+
+resources:
+  Resources:
+    Storage:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${env:AWS_S3_BUCKET}
+
+plugins:
+  - serverless-dotenv-plugin
