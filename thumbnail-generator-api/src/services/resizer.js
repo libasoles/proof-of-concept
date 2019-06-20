@@ -14,7 +14,7 @@ async function createImageCrops({
   resize = rescale,
   filenamePrefix = 'crop',
 }) {
-  const paths = [];
+  const promises = [];
 
   await async.forEachOf(dimensions, async (dimension) => {
     const { width, height } = dimension;
@@ -24,11 +24,12 @@ async function createImageCrops({
     });
 
     resize(image, dimension);
-    const imagePath = await storage.store(image, filename);
+    const imagePathPromise = storage.store(image, filename);
 
-    paths.push(imagePath);
+    promises.push(imagePathPromise);
   });
 
+  const paths = await Promise.all(promises);
 
   return paths;
 }

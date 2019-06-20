@@ -3,21 +3,62 @@ service: sinapsis-poc-gperez
 provider:
   name: aws
   runtime: nodejs10.x
-  stage: dev
-  region: sa-east-1
+  stage: ${env:STAGE, 'dev'}
+  region: ${env:AWS_STACK_REGION}
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - s3:*
+    Resource: #{ "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ImagesS3Bucket" } ] ]  }
+      Fn::Join:
+      - ''
+      - - 'arn:aws:s3:::'
+        - Ref: ServerlessDeploymentBucket
 
 functions:
   resizer:
     handler: src/awsHandler.execute
     events:
-      - http: post images/resize
+      - http:
+          method: post
+          path: images/resize
+          cors: true
 
 resources:
   Resources:
-    Storage:
+    ImagesS3Bucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${env:AWS_S3_BUCKET}
+        BucketName: ${env:AWS_S3_BUCKET}-${self:provider.stage}
+        AccessControl: PublicReadWrite
+        CorsConfiguration:
+          CorsRules:
+          - AllowedOrigins:
+            - '*'
+            AllowedHeaders:
+            - '*'
+            AllowedMethods:
+            - GET
+            - HEAD
+    ImagesS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: ImagesS3Bucket
+        PolicyDocument:
+          Statement:
+            -
+              Action:
+                - s3:GetObject
+              Effect: Allow
+              Resource:
+                Fn::Join: ['', [Fn::GetAtt: [ ImagesS3Bucket, Arn ], '/*'] ]
+              Principal: "*"
+  Outputs:
+    CropsBucketName:
+      Value:
+        Ref: ImagesS3Bucket
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-plugin-existing-s3

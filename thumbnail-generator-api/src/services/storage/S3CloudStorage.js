@@ -1,42 +1,30 @@
-const util = require('util');
-const mime = require('mime-types');
-const PassThroughStream = require('stream').PassThrough;
-
+const { getMimeType } = require('../../helpers/fileInfo');
 const StorageError = require('./StorageError');
 
 /**
  * Amazon aws storage.
- * Requires correct env variables to work.
  */
 class S3CloudStorage {
-  constructor({ service, bucketName = null, basePath }) {
+  constructor({
+    service, bucket, basePath,
+  }) {
     this.service = service;
-    this.bucketName = bucketName || process.env.AWS_S3_BUCKET;
-    this.url = util.format(basePath, this.bucketName);
+    this.bucketName = bucket;
+    this.url = basePath;
   }
 
   async store(file, outputFilename) {
     try {
-      await this.stream({
+      return this.service.putObject({
         Bucket: this.bucketName,
         Key: outputFilename,
         Body: file,
-        ContentType: mime.lookup(file),
-      });
-
-      return this.url + outputFilename;
+        ContentEncoding: 'base64',
+        ContentType: getMimeType(file),
+      }).promise().then(() => this.url + outputFilename);
     } catch (e) {
-      throw new StorageError('Could not save the file');
+      throw new StorageError('Could not save the file', e);
     }
-  }
-
-  async stream(params) {
-    const pass = new PassThroughStream();
-
-    return {
-      writeStream: pass,
-      promise: this.service.putObject(params).promise(),
-    };
   }
 }
 

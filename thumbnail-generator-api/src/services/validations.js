@@ -1,6 +1,4 @@
-const fs = require('fs');
-const mime = require('mime-types');
-
+const { getMimeType, getSize } = require('../helpers/fileInfo');
 const ValidationError = require('./ValidationError');
 
 function equal(a) {
@@ -8,15 +6,15 @@ function equal(a) {
 }
 
 const checkMaxSize = maxSize => (image) => {
-  const fileInfo = fs.statSync(image);
+  const imageSize = getSize(image);
 
-  if (fileInfo.size <= maxSize) return true;
+  if (imageSize <= maxSize) return true;
 
   throw new ValidationError(`Image too big (max allowed: ${maxSize / 1024 / 1024}Mb)`);
 };
 
 const checkMimeType = mimeTypes => (image) => {
-  const mType = mime.lookup(image);
+  const mType = getMimeType(image);
 
   if (mimeTypes.some(equal(mType))) return true;
 

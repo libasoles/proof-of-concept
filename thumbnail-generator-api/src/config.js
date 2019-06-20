@@ -17,7 +17,7 @@ module.exports = {
       height: 120,
     }],
     s3: {
-      url: 'https://%s.s3-sa-east-1.amazonaws.com/',
+      url: 'https://%s.s3-%s.amazonaws.com/',
     },
   },
   storage: {
