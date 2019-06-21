@@ -8,6 +8,10 @@ class S3CloudStorage {
   constructor({
     service, bucket, basePath,
   }) {
+    if (!service || !bucket || !basePath) {
+      throw new TypeError('Missing arguments');
+    }
+
     this.service = service;
     this.bucketName = bucket;
     this.url = basePath;

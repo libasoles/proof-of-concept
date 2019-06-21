@@ -1,13 +1,9 @@
 const execute = require('./main');
 const ValidationError = require('./services/ValidationError');
 
-function convertToBase64(image) {
-  return Buffer.from(image.replace(/^data:image\/\w+;base64,/, '').replace(/ /g, '+'), 'base64');
-}
-
 module.exports.execute = async (event) => {
   const encodedImage = JSON.parse(event.body).image;
-  const decodedImage = convertToBase64(encodedImage);
+  const decodedImage = Buffer.from(encodedImage, 'base64');
 
   return execute(decodedImage).then(response => ({
     statusCode: 200,
@@ -24,7 +20,7 @@ module.exports.execute = async (event) => {
 
     return {
       statusCode,
-      message: e.message,
+      body: JSON.stringify({ error: e.message }),
     };
   });
 };

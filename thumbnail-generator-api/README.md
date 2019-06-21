@@ -84,6 +84,10 @@ You will see the actual endpoint after deploying the stack, so _take note of it_
 
 _Check the endpoints > POST line_
 
+Two things:
+- your field _must_ be called `image`
+- the field _must_ be base64 encoded.
+
 ## Deploy 
 
 Run `poc deploy`
