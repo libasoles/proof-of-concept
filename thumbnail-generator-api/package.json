@@ -1,12 +1,11 @@
 {
   "name": "resizer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Image resizer - Proof of concept",
   "main": "src/main.js",
   "dependencies": {
     "async": "^3.0.1",
     "aws-sdk": "^2.474.0",
-    "buffer-type": "^1.0.0",
     "dotenv": "^8.0.0",
     "file-type": "^12.0.0",
     "mime-types": "^2.1.24",

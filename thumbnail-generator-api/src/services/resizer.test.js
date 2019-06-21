@@ -17,8 +17,8 @@ describe('rescale', () => {
     expect(sizeOf(outputBuffer)).toMatchObject(dimensions);
   });
 
-  it('should resize a buffered image to given dimensions', async () => {
-    const validImage = fs.readFileSync(`${__dirname}/../__tests__/alice.jpg`);
+  it('should resize a file image to given dimensions', async () => {
+    const validImage = `${__dirname}/../__tests__/alice.jpg`;
     const outputBuffer = await rescale(validImage, dimensions);
 
     expect(sizeOf(outputBuffer)).toMatchObject(dimensions);
@@ -34,7 +34,7 @@ describe('rescale', () => {
 
 describe('createImageCrops', () => {
   it('should create n resized images and provide the correct links', async () => {
-    const image = '/__tests__/alice.jpg';
+    const image = fs.readFileSync(`${__dirname}/../__tests__/alice.jpg`);
     const basePath = 'https://cloud.store/';
     const storage = new MockStorage({ basePath });
     const resizeStrategy = jest.fn().mockResolvedValue(Buffer.from('test'));
