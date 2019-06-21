@@ -23,12 +23,12 @@
     "serverless-dotenv-plugin": "^2.1.1"
   },
   "scripts": {
-    "start": "node -r dotenv/config src/main.js",
     "deploy": "serverless deploy -v",
     "deploy:remove": "serverless remove",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "local:performance": "node -r dotenv/config src/localPerformanceTest.js"
   },
   "jest": {
     "moduleDirectories": [
