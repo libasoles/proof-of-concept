@@ -1,3 +1,4 @@
+const fs = require('fs');
 const sizeOf = require('buffer-image-size');
 
 const { rescale, createImageCrops } = require('./resizer');
@@ -11,8 +12,21 @@ describe('rescale', () => {
 
   it('should resize an image to given dimensions', async () => {
     const validImage = `${__dirname}/../__tests__/alice.jpg`;
-    const output = rescale(validImage, dimensions);
-    const outputBuffer = await output.toBuffer();
+    const outputBuffer = await rescale(validImage, dimensions);
+
+    expect(sizeOf(outputBuffer)).toMatchObject(dimensions);
+  });
+
+  it('should resize a buffered image to given dimensions', async () => {
+    const validImage = fs.readFileSync(`${__dirname}/../__tests__/alice.jpg`);
+    const outputBuffer = await rescale(validImage, dimensions);
+
+    expect(sizeOf(outputBuffer)).toMatchObject(dimensions);
+  });
+
+  it('should resize a buffered image to given dimensions', async () => {
+    const validImage = fs.readFileSync(`${__dirname}/../__tests__/alice.jpg`);
+    const outputBuffer = await rescale(validImage, dimensions);
 
     expect(sizeOf(outputBuffer)).toMatchObject(dimensions);
   });
@@ -23,7 +37,7 @@ describe('createImageCrops', () => {
     const image = '/__tests__/alice.jpg';
     const basePath = 'https://cloud.store/';
     const storage = new MockStorage({ basePath });
-    const resizeStrategy = jest.fn(() => {});
+    const resizeStrategy = jest.fn().mockResolvedValue(Buffer.from('test'));
     const filenamePrefix = 'test';
     const dimensions = [
       {
@@ -50,11 +64,11 @@ describe('createImageCrops', () => {
     let width;
     let height;
     ({ width, height } = dimensions[0]);
-    expect(result[0].includes(`${basePath}${filenamePrefix}`)).toBe(true);
-    expect(result[0].includes(`${width}x${height}.jpg`)).toBe(true);
+    expect(result[0].includes(`${filenamePrefix}`)).toBe(true);
+    expect(result[0].includes(`${width}x${height}`)).toBe(true);
 
     ({ width, height } = dimensions[1]);
-    expect(result[1].includes(`${basePath}${filenamePrefix}`)).toBe(true);
-    expect(result[1].includes(`${width}x${height}.jpg`)).toBe(true);
+    expect(result[1].includes(`${filenamePrefix}`)).toBe(true);
+    expect(result[1].includes(`${width}x${height}`)).toBe(true);
   });
 });

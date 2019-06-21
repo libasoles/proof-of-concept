@@ -4,7 +4,7 @@ const async = require('async');
 const generateFilename = require('../helpers/generateFilename');
 
 function rescale(image, dimensions) {
-  return sharp(image).resize(dimensions);
+  return sharp(image).resize(dimensions).toBuffer();
 }
 
 async function createImageCrops({
@@ -18,13 +18,13 @@ async function createImageCrops({
 
   await async.forEachOf(dimensions, async (dimension) => {
     const { width, height } = dimension;
-    const filename = await generateFilename(image, {
+    const subfolder = `${width}x${height}`;
+    const filename = generateFilename(image, {
       prefix: filenamePrefix,
-      sufix: `${width}x${height}`,
     });
 
-    resize(image, dimension);
-    const imagePathPromise = storage.store(image, filename);
+    const croppedImage = await resize(image, dimension);
+    const imagePathPromise = storage.store(croppedImage, `${subfolder}/${filename}`);
 
     promises.push(imagePathPromise);
   });

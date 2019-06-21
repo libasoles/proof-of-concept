@@ -13,6 +13,7 @@ module.exports.execute = async (event) => {
     statusCode: 200,
     body: JSON.stringify(response),
   })).catch((e) => {
+    // eslint-disable-next-line no-console
     console.error(e.statusCode, e);
 
     let statusCode = 500;

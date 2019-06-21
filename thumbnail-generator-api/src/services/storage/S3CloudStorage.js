@@ -15,13 +15,15 @@ class S3CloudStorage {
 
   async store(file, outputFilename) {
     try {
-      return this.service.putObject({
+      await this.service.putObject({
         Bucket: this.bucketName,
         Key: outputFilename,
         Body: file,
         ContentEncoding: 'base64',
         ContentType: getMimeType(file),
-      }).promise().then(() => this.url + outputFilename);
+      }).promise();
+
+      return this.url + outputFilename;
     } catch (e) {
       throw new StorageError('Could not save the file', e);
     }
