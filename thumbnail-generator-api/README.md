@@ -119,4 +119,6 @@ curl -H "Content-Type: application/json" -d @-  "https://SOMETHING.execute-api.R
 
 ## Local development
 
-Just a note. This script is intended to run _on the cloud_. If you run this in _localhost_, you'll get a terrible execution time, between 2000ms and 3000ms. That's really bad. But can be easily improved by letting `S3.putObject` run asynchronously, without _awaiting_ it to give the API response. That would give you an acceptable 40ms performance. However, doing that is not possible with _lambda functions_, because after serving the user response, the environment just _disappears_... and so your uploads won't make it to S3 bucket (they will die, sorry). 
+Just a note. This script is intended to run _on the cloud_. If you run this in _localhost_, you'll get a terrible execution time, between 2000ms and 3000ms. That's really bad. But can be easily improved by letting `S3.putObject` run asynchronously, without _awaiting_ it to give the API response. That would give you an acceptable 40ms performance *. However, doing that is not possible with _lambda functions_, because after serving the user response, the environment just _disappears_... and so your uploads won't make it to S3 bucket (they will die, sorry). 
+
+(*) Open `config.js` and set the 'aws-s3-async' storage as default. Run `poc local:performance` and see the difference. It's really a different story.
