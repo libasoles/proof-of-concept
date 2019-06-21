@@ -8,10 +8,14 @@ Note that this is just a proof of concept. Amazon already provides a solution fo
 
 https://aws.amazon.com/es/solutions/serverless-image-handler/
 
+Also, I'm aware that uploading directly to S3, using pre-signed URLs is the preferred method because is less expensive (taking less lambda executing time).
+
 ## Stack
 
 - **AWS cloud stack**: *lambda* function (running _node 10.15 LTS_) + *API Gateway* + *S3 bucket*
 - **Serverless framework** to deploy the (_CloudFormation_) stack easily. 
+
+![stack](https://i.imgur.com/nCbc2BJ.png)
 
 ## Dependencies
 
@@ -94,7 +98,7 @@ You can check if the stack is running via CURL. Run this single line from within
 
 ```bach
 (echo -n '{"image": "'; base64 __tests__/alice.jpg; echo '"}') |
-curl -H "Content-Type: application/json" -d @-  "https://kf5ch22ckk.execute-api.sa-east-1.amazonaws.com/dev/images/resize"
+curl -H "Content-Type: application/json" -d @-  "https://SOMETHING.execute-api.REGION.amazonaws.com/dev/images/resize"
 ```
 
 First part of the script allows curl to manage big files. Otherwise, it would complain. 
@@ -106,5 +110,9 @@ To test that it validates file types, you can use another tests image (from __te
 
 ```bach
 (echo -n '{"image": "'; base64 __tests__/cheshire-cat.gif; echo '"}') |
-curl -H "Content-Type: application/json" -d @-  "https://kf5ch22ckk.execute-api.sa-east-1.amazonaws.com/dev/images/resize"
+curl -H "Content-Type: application/json" -d @-  "https://SOMETHING.execute-api.REGION.amazonaws.com/dev/images/resize"
 ```
+
+## Local development
+
+Just a note. This script is intended to run _on the cloud_. If you run this in _localhost_, you'll get a terrible execution time, between 2000ms and 3000ms. That's really bad. But can be easily improve by letting `S3.putObject` run asynchronously, without awaiting it to give the API response (that would give you an acceptable 40ms performance). However, that is not possible in lambda functions, because after serving the user response, the environment just disappears... and so your uploads wont make it to S3 bucket (they will die, sorry). 
