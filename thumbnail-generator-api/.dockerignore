@@ -1,0 +1,5 @@
+.idea/
+.serverless/
+coverage/
+node_modules/
+npm-debug.log
